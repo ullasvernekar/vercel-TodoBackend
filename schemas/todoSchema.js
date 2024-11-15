@@ -1,11 +1,13 @@
 import mongoose from "mongoose";
+import User from "./userSchema.js"; 
+import bcrypt from "bcryptjs"; 
 
 const todoSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
   },
-  description: String,
+  description: String, 
   image: {
     data: Buffer,
     contentType: String,
@@ -17,6 +19,12 @@ const todoSchema = new mongoose.Schema({
   },
   dueDate: {
     type: Date,
+  },
+
+  user : {
+    type : mongoose.Schema.Types.ObjectId,
+    ref : 'User',
+    required : true
   }
 });
 
