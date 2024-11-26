@@ -1,6 +1,6 @@
 import asyncHandler from "express-async-handler";
 import Todo from "../schemas/todoSchema.js";
-import mongoose from "mongoose";    
+import mongoose from "mongoose";
 
 export const createTodo = asyncHandler(async (req, res) => {
   try {
@@ -51,18 +51,14 @@ export const findById = asyncHandler(async (req, res) => {
       .status(200)
       .json({ success: true, msg: "Todo Found By ID Successfully", todoDoc });
   } catch (error) {
-    return res.status(500).json({
-      success: false,
-      msg: "server error",
-      error,
-    });
+    return res.status(500).json({ success: false, msg: "server error", error });
   }
 });
 
 export const findAll = asyncHandler(async (req, res) => {
   try {
     const todoDoc = await Todo.find();
-    if (!todoDoc) {
+    if (todoDoc.length === 0) {
       return res
         .status(404)
         .json({ success: false, msg: "No Todos exists to be found " });
@@ -96,7 +92,7 @@ export const updateTodo = asyncHandler(async (req, res) => {
       });
     }
 
-    const todoDoc = await Todo.updateOne(
+    const todoDoc = await Todo.findByIdAndUpdate(
       { _id: todoId },
       {
         title,
@@ -108,7 +104,7 @@ export const updateTodo = asyncHandler(async (req, res) => {
     );
 
     return res
-      .status(201)
+      .status(200)
       .json({ success: true, msg: "Todo Updated successfully", data: todoDoc });
   } catch (error) {
     return res.status(500).json({
@@ -145,4 +141,6 @@ export const deleteTodo = asyncHandler(async (req, res) => {
     });
   }
 });
+
+
 
